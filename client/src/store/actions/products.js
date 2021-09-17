@@ -6,6 +6,7 @@ export const FETCH_SINGLE_PRODUCT = "FETCH_SINGLE_PRODUCT";
 export const POST_CART = "POST_CART";
 export const GET_CART = "GET_CART";
 export const POST_CART_DELETE_PRODUCT = "POST_CART_DELETE_PRODUCT";
+export const POST_DELETE_PRODUCT = "POST_DELETE_PRODUCT";
 export const GET_EDIT_PRODUCT = "GET_EDIT_PRODUCT";
 export const POST_EDIT_PRODUCT = "POST_EDIT_PRODUCT";
 
@@ -19,7 +20,6 @@ export const createProduct = (title, imageUrl, price, description) => {
         dispatch({
           type: CREATE_PRODUCT,
           productData: {
-            id: res.data.product.id,
             title: res.data.product.title,
             imageUrl: res.data.product.imageUrl,
             price: res.data.product.price,
@@ -49,7 +49,7 @@ export const fetchSingleProduct = (productId) => {
       dispatch({
         type: FETCH_SINGLE_PRODUCT,
         productData: {
-          id: res.data.product.id,
+          _id: res.data.product._id,
           title: res.data.product.title,
           imageUrl: res.data.product.imageUrl,
           price: res.data.product.price,
@@ -100,6 +100,23 @@ export const postCartDeleteProduct = (productId) => {
   };
 };
 
+export const postDeleteProduct = (productId) => {
+  return async (dispatch) => {
+    console.log('/delete-product", { _id: productId');
+    console.log(productId);
+    await axios
+      .post("/admin/delete-product", { _id: productId })
+      .then((res) => {
+        console.log("delete-product");
+        console.log(res.data);
+        dispatch({
+          type: POST_DELETE_PRODUCT,
+          products: res.data.products,
+        });
+      });
+  };
+};
+
 export const getEditProduct = (params, query) => {
   return async (dispatch) => {
     await axios
@@ -110,7 +127,7 @@ export const getEditProduct = (params, query) => {
         dispatch({
           type: GET_EDIT_PRODUCT,
           productData: {
-            id: res.data.product.id,
+            _id: res.data.product._id,
             title: res.data.product.title,
             imageUrl: res.data.product.imageUrl,
             price: res.data.product.price,
@@ -121,10 +138,12 @@ export const getEditProduct = (params, query) => {
   };
 };
 
-export const postEditProduct = (id, title, imageUrl, price, description) => {
+export const postEditProduct = (_id, title, imageUrl, price, description) => {
   return async (dispatch) => {
+    console.log("postEditProduct  _id");
+    console.log(_id);
     await axios
-      .post("/admin/edit-product", { id, title, imageUrl, price, description })
+      .post("/admin/edit-product", { _id, title, imageUrl, price, description })
       .then((res) => {
         console.log("POST");
         console.log(res.data);

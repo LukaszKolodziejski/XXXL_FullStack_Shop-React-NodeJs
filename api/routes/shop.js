@@ -1,7 +1,5 @@
-import path from "path";
 import express from "express";
-import Product from "../models/product";
-import Cart from "../models/cart";
+
 import * as shopController from "../controllers/shop";
 
 const router = express.Router();

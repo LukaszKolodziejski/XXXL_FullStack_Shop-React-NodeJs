@@ -29,9 +29,6 @@ const Layout = (props) => {
             <NavLink to="/admin/add-product" className="main-header__item">
               Add Product
             </NavLink>
-            {/* <NavLink to="/admin/edit-product" className="main-header__item">
-              Edit Product
-            </NavLink> */}
             <NavLink to="/admin/products" className="main-header__item">
               Admin Products
             </NavLink>

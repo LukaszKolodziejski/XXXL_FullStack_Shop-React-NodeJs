@@ -2,12 +2,14 @@ import express from "express";
 import Product from "../models/product";
 import Cart from "../models/cart";
 
+// mongoDB
 export const getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
     res.send({ products });
   });
 };
 
+// mongoDB
 export const getProduct = (req, res, next) => {
   const productId = req.params.productId;
   console.log("productId");

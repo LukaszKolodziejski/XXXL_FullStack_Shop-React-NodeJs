@@ -2,6 +2,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: sans-serif;
+  box-sizing: border-box;
 }
 
 main {
@@ -12,7 +13,6 @@ main {
   width: 100%;
   height: 3.5rem;
   background-color: #dbc441;
-  padding: 0 1.5rem;
 }
 
 .main-header__nav {
@@ -145,6 +145,8 @@ button:active {
 
 .card__image img {
   width: 100%;
+  height: 18rem;
+  background-size: cover;
 }
 
 .card__actions {

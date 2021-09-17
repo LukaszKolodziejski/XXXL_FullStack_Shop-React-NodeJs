@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import Product from "../models/product";
 
 export const postAddProduct = (req, res, next) => {
@@ -23,11 +24,28 @@ export const getEditProduct = (req, res, next) => {
 };
 
 export const postEditProduct = (req, res, next) => {
-  const { id, title, imageUrl, price, description } = { ...req.body };
+  const { _id, title, imageUrl, price, description } = { ...req.body };
+  console.log("postEditProduct _id");
+  console.log(_id);
+  const prodId = _id;
+  const updatedProduct = new Product(_id, title, imageUrl, price, description);
 
-  const updatedProduct = new Product(id, title, imageUrl, price, description);
+  console.log("updatedProduct");
+  console.log(updatedProduct);
+
   updatedProduct.save();
   console.log("post Edit title");
   console.log(updatedProduct);
   res.send({ redirect: "/" });
+};
+
+export const postDeleteProduct = (req, res, next) => {
+  console.log("postDeleteProduct _id");
+  const { _id } = req.body;
+  console.log(_id);
+  Product.deleteById(_id).then(() => {
+    Product.fetchAll((products) => {
+      res.send({ products });
+    });
+  });
 };

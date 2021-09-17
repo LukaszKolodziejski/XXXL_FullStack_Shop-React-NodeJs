@@ -4,8 +4,6 @@ import { Redirect } from "react-router-dom";
 
 import * as actoinCreator from "../../store/actions/products";
 
-//TODO: WRITE EVERY THING TO GITHUB
-
 const Shop = (props) => {
   const [path, setPath] = useState("");
   const { products, redirect } = useSelector((state) => state.products);
@@ -23,7 +21,6 @@ const Shop = (props) => {
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
-  // }, [products, redirect, fetchProducts, dispatch]);
 
   let productsList;
 
@@ -48,7 +45,7 @@ const Shop = (props) => {
           <div className="card__actions">
             <button
               className="btn"
-              onClick={() => btnCartHandler(product.id.toString())}
+              onClick={() => btnCartHandler(product._id.toString())}
             >
               Add to Cart
             </button>

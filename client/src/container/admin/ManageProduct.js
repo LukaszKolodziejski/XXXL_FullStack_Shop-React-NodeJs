@@ -51,9 +51,9 @@ const ManageProduct = (props) => {
 
     if (params.productId) {
       console.log("Edit Product !!!!");
-      const { id } = product;
+      const { _id } = product;
       dispatch(
-        actoinCreator.postEditProduct(id, title, imageUrl, price, description)
+        actoinCreator.postEditProduct(_id, title, imageUrl, price, description)
       );
     } else {
       dispatch(

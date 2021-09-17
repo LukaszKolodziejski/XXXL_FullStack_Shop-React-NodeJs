@@ -24,9 +24,9 @@ const ProductList = (props) => {
   let productsList;
   if (products) {
     console.log("ProductList");
-    console.log("products[0].id");
-    // console.log(products[0].id);
-    // console.log(products[0].id);
+    console.log("products[0]._id");
+    // console.log(products[0]._id);
+    // console.log(products[0]._id);
     productsList = products.map((product, index) =>
       product ? (
         <article key={index} className="product-item">
@@ -41,16 +41,16 @@ const ProductList = (props) => {
             <p className="product__description">{product.description}</p>
           </div>
           <div className="card__actions">
-            <Link to={`/product-detail/${product.id}`}>
+            <Link to={`/product-detail/${product._id}`}>
               <button
-                onClick={() => btnDetailHandler(product.id)}
+                onClick={() => btnDetailHandler(product._id)}
                 className="btn"
               >
                 Detail
               </button>
             </Link>
             <button
-              onClick={() => btnCartHandler(product.id.toString())}
+              onClick={() => btnCartHandler(product._id.toString())}
               className="btn"
             >
               Add to Cart

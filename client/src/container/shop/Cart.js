@@ -44,22 +44,14 @@ const Cart = (props) => {
           {products.map((p) => {
             if (p.productData) {
               return (
-                <li key={p.productData.id}>
+                <li key={p.productData._id}>
                   <p>{`${p.productData.title} (${p.amount})`}</p>
-                  {/* <form action="/cart-delete-item" method="POST"> */}
-                  {/* <form>
-                    <input
-                      type="hidden"
-                      value={p.productData.id}
-                      name="productId"
-                    /> */}
                   <button
                     className="btn"
-                    onClick={() => btnDeleteHandler(p.productData.id)}
+                    onClick={() => btnDeleteHandler(p.productData._id)}
                   >
                     Delete
                   </button>
-                  {/* </form> */}
                 </li>
               );
             }

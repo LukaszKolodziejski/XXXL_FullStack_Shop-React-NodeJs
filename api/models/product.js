@@ -1,68 +1,77 @@
 import fs from "fs";
 import path from "path";
+
+import { ObjectId } from "mongodb";
+import { getDB } from "../utils/database";
+
 import Cart from "./cart";
 
 const filePath = path.join(__dirname, "../data/products.json");
 
 export default class Product {
-  constructor(id, title, imageUrl, price, description) {
-    this.id = id;
+  constructor(_id, title, imageUrl, price, description) {
+    this._id = new ObjectId(_id);
     this.title = title;
     this.imageUrl = imageUrl;
     this.price = price;
     this.description = description;
   }
   save() {
-    fs.readFile(filePath, (err, fileContent) => {
-      let products = [];
-      if (!err) products = JSON.parse(fileContent);
-      if (this.id) {
-        const existingProductIndex = products.findIndex(
-          (prod) => prod.id === this.id
-        );
-        const updateProducts = [...products];
-        updateProducts[existingProductIndex] = this;
+    const db = getDB();
+    // db.collection('products').insertOne({name:'Lukasz',age:22})
 
-        fs.writeFile(filePath, JSON.stringify(updateProducts), (err) => {
-          console.log("update err");
-          console.log(err);
-        });
-      } else {
-        this.id = Math.random().toString();
-        products.push(this);
+    console.log("this._id");
+    console.log(this._id);
 
-        fs.writeFile(filePath, JSON.stringify(products), (err) => {
-          console.log(err);
-        });
-      }
-    });
+    if (this._id) {
+      console.log("UPDATE !!!!!!");
+      return db
+        .collection("products")
+        .updateOne({ _id: this._id }, { $set: this })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else {
+      console.log("NEW !!!!!!");
+      return db
+        .collection("products")
+        .insertOne(this)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
   }
 
   static fetchAll(cb) {
-    fs.readFile(filePath, (err, fileContent) => {
-      if (err) return cb([]);
-      return cb(JSON.parse(fileContent));
-    });
+    const db = getDB();
+    return db
+      .collection("products")
+      .find()
+      .toArray()
+      .then((prod) => cb(prod))
+      .catch((err) => cb([]));
   }
 
-  static deleteById(id) {
-    fs.readFile(filePath, (err, fileContent) => {
-      const products = JSON.parse(fileContent);
-      const product = products.find((prod) => prod.id === id);
-      const updatedProducts = products.filter((prod) => prod.id !== id);
-      fs.writeFile(filePath, JSON.stringify(updatedProducts), (err) => {
-        if (!err) Cart.deleteProduct(id, product.price);
+  static deleteById(_id) {
+    const db = getDB();
+    return db
+      .collection("products")
+      .deleteOne({ _id: new ObjectId(_id) })
+      .then((res) => {
+        console.log("delete");
+        console.log(res);
+      })
+      .catch();
+  }
+
+  static findById(_id, cb) {
+    const db = getDB();
+    return db
+      .collection("products")
+      .find({ _id: new ObjectId(_id) })
+      .next()
+      .then((prod) => cb(prod))
+      .catch((err) => {
+        console.log(err);
+        return cb({});
       });
-    });
-  }
-
-  static findById(id, cb) {
-    fs.readFile(filePath, (err, fileContent) => {
-      const products = JSON.parse(fileContent);
-      const product = products.find((prod) => prod.id === id);
-
-      if (err) return cb([]);
-      cb(product);
-    });
   }
 }
