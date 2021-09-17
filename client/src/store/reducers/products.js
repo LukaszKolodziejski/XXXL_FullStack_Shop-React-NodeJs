@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTS,
   FETCH_SINGLE_PRODUCT,
   POST_CART_DELETE_PRODUCT,
+  POST_DELETE_PRODUCT,
   POST_CART,
   GET_CART,
   GET_EDIT_PRODUCT,
@@ -38,6 +39,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         redirect: action.redirect,
+      };
+    case POST_DELETE_PRODUCT:
+      return {
+        ...state,
+        products: action.products,
       };
     case GET_CART:
       return {

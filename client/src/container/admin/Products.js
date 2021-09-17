@@ -13,6 +13,12 @@ const Products = (props) => {
     dispatch(fetchProducts());
   }, []);
 
+  const btnDeleteHandler = (productId) => {
+    console.log("btnDeleteHandler = (productId)");
+    console.log(productId);
+    dispatch(actoinCreator.postDeleteProduct(productId));
+  };
+
   let productsList;
   if (products) {
     console.log("Products");
@@ -31,11 +37,16 @@ const Products = (props) => {
             <p className="product__description">{product.description}</p>
           </div>
           <div className="card__actions">
-            <Link to={`/admin/edit-product/${product.id}?edit=true`}>
+            <Link to={`/admin/edit-product/${product._id}?edit=true`}>
               <button className="btn">Edit</button>
             </Link>
+            <button
+              className="btn"
+              onClick={() => btnDeleteHandler(product._id)}
+            >
+              Delete
+            </button>
             {/* <Link to="/admin/delete-product">
-              <button className="btn">Delete</button>
             </Link> */}
           </div>
         </article>

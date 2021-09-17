@@ -41,7 +41,7 @@ const ProductDetail = (props) => {
           <h2>${product.price}</h2>
           <p>{product.description}</p>
           <Link to="/cart">
-            <button onClick={() => btnCartHandler(product.id)} className="btn">
+            <button onClick={() => btnCartHandler(product._id)} className="btn">
               Add to Cart
             </button>
           </Link>
