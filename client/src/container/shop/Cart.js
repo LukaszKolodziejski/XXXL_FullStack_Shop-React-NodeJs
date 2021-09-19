@@ -6,9 +6,9 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 
 const Cart = (props) => {
   const [path, setPath] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   // const { products, redirect } = useSelector((state) => state.products);
-  const products = useSelector((state) => state.products.products);
-  const redirect = useSelector((state) => state.products.redirect);
+  const { products, cart, redirect } = useSelector((state) => state.products);
 
   const dispatch = useDispatch();
 
@@ -18,6 +18,8 @@ const Cart = (props) => {
 
   console.log("products");
   console.log(products);
+  console.log("cart");
+  console.log(cart);
 
   const btnDeleteHandler = (productId) => {
     console.log("btnDeleteHandler");
@@ -29,34 +31,54 @@ const Cart = (props) => {
   //   dispatch(actoinCreator.getCart());
   // }, [products, dispatch, btnDeleteHandler]);
 
-  useEffect(() => {
-    setPath(redirect);
-  }, [redirect]);
+  // useEffect(() => {
+  //   setPath(redirect);
+  // }, [redirect]);
 
-  if (path) return <Redirect to={path} />;
-  if (!products) return <Spinner />;
-  // if ( isLoading) return <Spinner />;
+  useEffect(() => {
+    if (products && cart) {
+      setIsLoading(false);
+    }
+  }, [cart]);
+
+  const btnOrderHandler = () => {
+    dispatch(actoinCreator.postOrders());
+  };
+
+  if (redirect) return <Redirect to={redirect} />;
+  if (isLoading) return <Spinner />;
 
   return (
     <main>
-      {products && products.length > 0 ? (
-        <ul>
-          {products.map((p) => {
-            if (p.productData) {
-              return (
-                <li key={p.productData._id}>
-                  <p>{`${p.productData.title} (${p.amount})`}</p>
-                  <button
-                    className="btn"
-                    onClick={() => btnDeleteHandler(p.productData._id)}
-                  >
-                    Delete
-                  </button>
-                </li>
-              );
-            }
-          })}
-        </ul>
+      {cart && cart.length > 0 ? (
+        <div>
+          <ul className="cart__item-list">
+            {cart.map((item) => {
+              if (item) {
+                const product = products.find(
+                  (prod) => prod._id === item.productId
+                );
+                return (
+                  <li key={item._id} className="cart__item">
+                    <h1>{product.title}</h1>
+                    <h1>{item.amount}</h1>
+                    <button
+                      className="btn"
+                      onClick={() => btnDeleteHandler(item.productId)}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                );
+              }
+            })}
+          </ul>
+          <div className="centered">
+            <button className="btn" onClick={btnOrderHandler}>
+              Order Now!
+            </button>
+          </div>
+        </div>
       ) : (
         <h1>No Products in Cart!</h1>
       )}

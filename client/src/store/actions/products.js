@@ -3,12 +3,17 @@ import axios from "../../axios-api";
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FETCH_SINGLE_PRODUCT = "FETCH_SINGLE_PRODUCT";
+
 export const POST_CART = "POST_CART";
 export const GET_CART = "GET_CART";
 export const POST_CART_DELETE_PRODUCT = "POST_CART_DELETE_PRODUCT";
+
 export const POST_DELETE_PRODUCT = "POST_DELETE_PRODUCT";
 export const GET_EDIT_PRODUCT = "GET_EDIT_PRODUCT";
 export const POST_EDIT_PRODUCT = "POST_EDIT_PRODUCT";
+
+export const POST_ORDERS = "POST_ORDERS";
+export const GET_ORDERS = "GET_ORDERS";
 
 export const createProduct = (title, imageUrl, price, description) => {
   return async (dispatch) => {
@@ -19,12 +24,13 @@ export const createProduct = (title, imageUrl, price, description) => {
         console.log(res.data);
         dispatch({
           type: CREATE_PRODUCT,
-          productData: {
-            title: res.data.product.title,
-            imageUrl: res.data.product.imageUrl,
-            price: res.data.product.price,
-            description: res.data.product.description,
-          },
+          productData: res.data.product,
+          // productData: {
+          //   title: res.data.product.title,
+          //   imageUrl: res.data.product.imageUrl,
+          //   price: res.data.product.price,
+          //   description: res.data.product.description,
+          // },
         });
       });
   };
@@ -63,7 +69,7 @@ export const fetchSingleProduct = (productId) => {
 export const postCart = (productId) => {
   return async (dispatch) => {
     await axios.post("/cart", { productId }).then((res) => {
-      console.log("product-detail");
+      console.log("post Cart");
       console.log(res.data);
       dispatch({
         type: POST_CART,
@@ -75,12 +81,13 @@ export const postCart = (productId) => {
 
 export const getCart = () => {
   return async (dispatch) => {
-    await axios.get("/cart").then((res) => {
+    await axios.get("/cart").then(async (res) => {
       console.log("res.data");
       console.log(res.data);
+      await dispatch(fetchProducts());
       dispatch({
         type: GET_CART,
-        products: res.data.products,
+        cart: res.data.cart,
       });
     });
   };
@@ -93,7 +100,7 @@ export const postCartDeleteProduct = (productId) => {
       console.log(res.data);
       dispatch({
         type: POST_CART_DELETE_PRODUCT,
-        redirect: res.data.redirect,
+        cart: res.data.cart,
       });
     });
     dispatch(getCart());
@@ -152,5 +159,32 @@ export const postEditProduct = (_id, title, imageUrl, price, description) => {
           redirect: res.data.redirect,
         });
       });
+  };
+};
+
+export const postOrders = () => {
+  return async (dispatch) => {
+    await axios.post("/create-order").then(async (res) => {
+      console.log("res.data");
+      console.log(res.data);
+      dispatch({
+        type: POST_ORDERS,
+        orders: res.data.orders,
+        redirect: res.data.redirect,
+      });
+    });
+  };
+};
+
+export const getOrders = () => {
+  return async (dispatch) => {
+    await axios.get("/orders").then(async (res) => {
+      console.log("res.data");
+      console.log(res.data);
+      dispatch({
+        type: GET_ORDERS,
+        orders: res.data.orders,
+      });
+    });
   };
 };

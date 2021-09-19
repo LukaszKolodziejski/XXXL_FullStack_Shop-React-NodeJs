@@ -8,12 +8,16 @@ import {
   GET_CART,
   GET_EDIT_PRODUCT,
   POST_EDIT_PRODUCT,
+  POST_ORDERS,
+  GET_ORDERS,
 } from "../actions/products";
 
 const initialState = {
   singleProduct: {},
   products: [],
   redirect: "",
+  cart: [],
+  orders: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -38,7 +42,10 @@ const reducer = (state = initialState, action) => {
     case POST_CART_DELETE_PRODUCT:
       return {
         ...state,
-        redirect: action.redirect,
+        products: [...state.products],
+        redirect: "",
+        singleProduct: {},
+        cart: action.cart,
       };
     case POST_DELETE_PRODUCT:
       return {
@@ -47,7 +54,11 @@ const reducer = (state = initialState, action) => {
       };
     case GET_CART:
       return {
-        products: action.products,
+        ...state,
+        products: [...state.products],
+        redirect: "",
+        singleProduct: {},
+        cart: action.cart,
       };
     case POST_CART:
       return {
@@ -62,6 +73,21 @@ const reducer = (state = initialState, action) => {
     case POST_EDIT_PRODUCT:
       return {
         redirect: action.redirect,
+      };
+    case POST_ORDERS:
+      return {
+        ...state,
+        products: [...state.products],
+        redirect: action.redirect,
+        singleProduct: {},
+      };
+    case GET_ORDERS:
+      return {
+        ...state,
+        products: [...state.products],
+        redirect: "",
+        singleProduct: {},
+        orders: action.orders,
       };
     default:
       return state;

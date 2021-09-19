@@ -1,10 +1,22 @@
 import { ObjectId } from "mongodb";
-import Product from "../models/product";
+import Product from "../models/Product";
 
 export const postAddProduct = (req, res, next) => {
   const { title, imageUrl, price, description } = req.body;
-  const product = new Product(null, title, imageUrl, price, description);
-  console.log("product");
+  const { user } = req; // TODO: change user._id
+
+  console.log("const { user } = req;");
+  console.log(user);
+  // const product = new Product(null, title, imageUrl, price, description);
+  const product = new Product(
+    null,
+    title,
+    imageUrl,
+    price,
+    description,
+    user._id
+  );
+  console.log("controllers product");
   console.log(product);
   product.save();
   res.send({ product });
@@ -25,10 +37,18 @@ export const getEditProduct = (req, res, next) => {
 
 export const postEditProduct = (req, res, next) => {
   const { _id, title, imageUrl, price, description } = { ...req.body };
+  const { user } = req; // TODO: change user._id
   console.log("postEditProduct _id");
   console.log(_id);
   const prodId = _id;
-  const updatedProduct = new Product(_id, title, imageUrl, price, description);
+  const updatedProduct = new Product(
+    new ObjectId(prodId),
+    title,
+    imageUrl,
+    price,
+    description,
+    new ObjectId(user._id)
+  );
 
   console.log("updatedProduct");
   console.log(updatedProduct);

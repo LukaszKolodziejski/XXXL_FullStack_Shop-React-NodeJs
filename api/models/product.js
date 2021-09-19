@@ -4,17 +4,18 @@ import path from "path";
 import { ObjectId } from "mongodb";
 import { getDB } from "../utils/database";
 
-import Cart from "./cart";
+import Cart from "./Cart";
 
 const filePath = path.join(__dirname, "../data/products.json");
 
 export default class Product {
-  constructor(_id, title, imageUrl, price, description) {
-    this._id = new ObjectId(_id);
+  constructor(_id, title, imageUrl, price, description, userId) {
+    this._id = _id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.price = price;
     this.description = description;
+    this.userId = userId;
   }
   save() {
     const db = getDB();
@@ -35,7 +36,10 @@ export default class Product {
       return db
         .collection("products")
         .insertOne(this)
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          return res;
+        })
         .catch((err) => console.log(err));
     }
   }

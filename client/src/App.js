@@ -7,6 +7,7 @@ import ManageProduct from "./container/admin/ManageProduct";
 import Products from "./container/admin/Products";
 import Shop from "./container/shop/Shop";
 import Cart from "./container/shop/Cart";
+import User from "./container/user/User";
 import Orders from "./container/shop/Orders";
 import Checkout from "./container/shop/Checkout";
 import ProductList from "./container/shop/ProductList";
@@ -31,6 +32,7 @@ const App = () => {
           />
           <Route path="/admin/add-product" component={ManageProduct} />
           <Route path="/admin/products" component={Products} />
+          <Route path="/user/create-account" component={User} />
           <Route component={Error} />
         </Switch>
       </Layout>

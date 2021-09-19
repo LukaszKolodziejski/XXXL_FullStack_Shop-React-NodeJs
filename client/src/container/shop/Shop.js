@@ -10,6 +10,8 @@ const Shop = (props) => {
   const dispatch = useDispatch();
 
   const btnCartHandler = (productId) => {
+    console.log("btnCartHandler");
+    console.log(btnCartHandler);
     dispatch(actoinCreator.postCart(productId));
   };
 
