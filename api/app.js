@@ -4,10 +4,13 @@ import bodyParser from "body-parser";
 
 import adminRoutes from "./routes/admin";
 import shopRoutes from "./routes/shop";
+import userRoutes from "./routes/user";
 import errorRoutes from "./routes/404";
 import errorController from "./controllers/error";
 
 import { mongoConnect } from "./utils/database";
+
+import User from "./models/User";
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -27,7 +30,19 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  User.findById("61449e5403658549a62bd0be")
+    .then((user) => {
+      // console.log("_id user");
+      // console.log(user);
+      req.user = new User(user.username, user.email, user.cart, user._id);
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+
 app.use("/admin", adminRoutes);
+// app.use("/user", userRoutes);
 app.use("/", shopRoutes);
 app.use(errorController);
 
