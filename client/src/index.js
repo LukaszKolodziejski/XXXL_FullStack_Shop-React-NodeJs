@@ -7,10 +7,12 @@ import thunk from "redux-thunk";
 import "./index.css";
 import App from "./App";
 import productsReducer from "./store/reducers/products";
+import userReducer from "./store/reducers/user";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  user: userReducer,
 });
 
 const store = createStore(
